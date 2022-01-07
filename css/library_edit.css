@@ -1,0 +1,16 @@
+@charset "UTF-8";
+
+body{
+  background-color: #fcebb6;
+}
+
+.name{
+  display: inline-block;
+  margin-top: 30px;
+  margin-left: 15%;
+  background-color: #fcebb6;
+  padding:25px;
+  border-top:none ;
+  border-left:none ;
+  border-right:none ;
+}

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="旅の情報を共有する掲示板サイト">
+  <meta name="keywords" content="旅, 情報共有">
+  <meta property="og:title" content="Trabel Board ~旅の掲示板~">
+  <meta property="og:type" content="article">
+  <meta property="og:description" content="旅の情報を共有する掲示板サイト">
+  <meta property="og:site_name" content="プログラミング教材">
+  <link rel="stylesheet" type="text/css" href="../css/reset.css">
+  <link rel="stylesheet" type="text/css" href="../css/common.css">
+  <link rel="stylesheet" type="text/css" href="../css/header.css">
+  <link rel="stylesheet" type="text/css" href="../css/footer.css">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Murecho&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fuzzy+Bubbles:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fuzzy+Bubbles:wght@400;700&family=Sawarabi+Mincho&display=swap"
+    rel="stylesheet">
+
+  <title>Trabel Board ~旅の掲示板~</title>
+</head>
+
+
+
+<body>
+  <!----------header--------->
+  <div class="home_img title img_ams">
+    <header class="header">
+      <nav class="header_nav">
+        <ul class="header_ul">
+          <li class="home_icon"><a href="index.html"><img src="../img/outline_home_black_24dp.png" alt="ホームアイコン"></a>
+          </li>
+
+          <div class="header_li">
+            <li class="header_li2"><a href="../php/library.php">Library</a></li>
+            <li class="header_li2"><a href="../php/community.php">Community</a></li>
+            <li class="header_li2"><a href="../php/contact.php">Contact</a></li>
+          </div>
+        </ul>
+      </nav> 
+    </header>
+
+    <div class="home_title">
+     <h1>Trabel Board<br><span>旅の掲示板</span></h1>
+    </div>
+    
+    <div>
+      <p>～旅行の思い出を投稿する情報共有コミュニティ～</p>
+    </div>
+    
+    
+    
+  </div><!------------big_img_conf ---------->
+  
+
+  <!----------content---------->
+  <main>
+  <section class="content">
+    <div class="content_title">
+      <h2>Concept</h2>
+    </div>
+
+    <div class="content_wrapper">
+      <p class="content_text">このWebアプリは、自分の旅行の思い出や写真を投稿したり<br>
+      皆の投稿を閲覧したり出来る、情報共有コミュニティアプリです。 <br>
+      また、「誰でも簡単に」を目標に作成したので<br>
+      気楽に使ってくれればいいなと思っています。<br>
+      共有した情報をもとに旅行に出かけたり、投稿を見るだけだったり<br>
+      使い方はあなた次第です。
+      </p>
+    </div> 
+
+    <div class="but">
+      <button type="submit"><a href="../php/login.php">早速使用してみる</a></button>
+    </div>
+    
+  </section>
+</main>
+
+
+<!----------library_concept----------->
+
+<section class="concept">
+<div class="concept_wrapper">
+  <div class="concept_title">
+   <h2>Library</h2>
+  </div>
+   <img class="concept_img" src="../img/colton-sturgeon-N4fdQbMJ0nI-unsplash.jpg" alt="ライブラリコンセプトの写真">
+</div>
+<div class="concept_text_wrapper grd1">  
+  <h3 class="concept_sub_title">Libraryで自分の投稿を見る</h3>
+
+  <div class="concept_inner">
+    <p class="concept_text">Libraryでは、自分の過去の投稿がまとめてある所です。自分の投稿を見たり、今まで投稿してきた投稿数や、貰ってきたいいね数を見れたりできます。また、Comｍunityで自分がみんなの投稿からいいねした投稿も見れたりできます。自分の旅を見返して「あんな事があったな～」「こんなの事があったな～」と思い返してはいかかでしょうか？
+    </p>
+  </div>
+</div>
+</section>
+
+
+
+<!----------community_concept----------->
+<section class="concept">
+  <div class="concept_wrapper">
+    <div class="concept_title">
+      <h2>Community</h2>
+    </div>
+    <img class="concept_img" src="../img/mario-purisic-jG1z5o7NCq4-unsplash.jpg" alt="コミュニティコンセプトの写真">
+  </div>
+
+<div class="concept_text_wrapper grd2">
+  <h3 class="concept_sub_title">Communityでみんなの投稿を見る</h3>
+
+  <div class="concept_inner">
+    <p class="concept_text">
+      Communityではこのアプリのメインページであり、みんなの投稿を見る事
+      ができます。気になる投稿があったらクリックすると細かい内容を見る事がで
+      き、いいねと思ったら「この投稿にいいねする」を押してあげましょう。また、
+      気になってる場所や見たい投稿があるなら、検索機能で調べる事もできます。
+      みんなの投稿を見て「こんな場所があるんだ、自分もここに行ってみたいな」と
+      思わせるような情報があるかもしれません。
+    </p>
+  </div>
+</div>
+</section>
+
+
+
+<!----------post_concept---------->
+<section class="concept grd3">
+  <h3 class="concept_sub_title">自分の旅を投稿する</h3>
+  <div class="concept_inner">
+    <p class="concept_text">
+     LibraryとCommunityにある「投稿する」から投稿する事ができます。文字数は200文字、写真は５枚まで入れる事ができます。完成したら「Communityに投稿する」を押してもらうと投稿する事ができます。自分の投稿をたくさん投稿して、たくさんみんなと情報共有してTrabel Boardを盛り上げましょう!
+    </p>
+
+    <div class="but">
+      <button type="submit"><a href="../php/login.php">早速使用してみる</a></button>
+    </div>
+  </div>
+</section>
+
+
+<!----------footer---------->
+<section class="footer">
+  <p>©2021.○○.○○ Asahi Takayuki All Rights Reserved</p>
+</section>
+</body>
+</html>

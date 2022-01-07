@@ -1,0 +1,104 @@
+@charset "UTF-8";
+
+body{
+  margin: auto 20%;
+  background-color: #fcebb6;
+  font-family: "Sawarabi Mincho", sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.join_text{
+  font-size: 45px;
+  color: #f07818;
+}
+
+.join_text_wrappe p{
+  margin-top: 20px;
+  font-size: 20px;
+}
+
+form{
+  margin-top:5% ;
+}
+
+.error {
+  color: rgb(250, 54, 54);
+  font-size: 20px;
+}
+
+span {
+  background-color: rgb(248, 46, 46);
+  color: white;
+  font-size: 15px;
+  margin-left: 20px;
+}
+
+label {
+  display: inline-block;
+  width: 30%;
+  font-size: 20px;
+  color: #f07818;
+  line-height: 80px;
+}
+
+input{
+  box-sizing: border-box;
+  width: 50%;
+  background: rgba(255, 255, 255, 0.37);
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  padding: 10px 0;
+  font-size: 20px;
+}
+
+.but {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.but_inner{
+  display: block;
+  border: none;
+  border-radius: 25px;
+  color: #5e412f;
+  letter-spacing: 3px;
+  
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.login_but{
+  background-color: #fab341;
+  padding: 10px 30px;
+}
+
+.login_but:hover{
+  background-color: #b18031 ;
+  transition: 0.7s;
+}
+
+.join_but{
+  background-color: #44ee6f;
+}
+
+.join_but:hover{
+  background-color: #33ac51 ;
+  transition: 0.7s;
+}
+
+.lead_text{
+  font-size:17px;
+  margin: 20px 0;
+}
+
+.but_inner a{
+  display: inline-block;
+  text-decoration: none;
+  padding:10px 30px ;
+  color: #5e412f;
+}

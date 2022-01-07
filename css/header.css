@@ -1,0 +1,107 @@
+@charset "UTF-8";
+
+
+/*----------各ページの写真設定----------*/
+
+.home_img{
+  background-image: url(../img/chang-duong-Sj0iMtq_Z4w-unsplash.jpg);
+  min-height: 100vh;
+  background-size:100%;
+  background-position-y:40% ;
+  max-width: 100%;
+}
+
+.community_img{
+  background-image: url(../img/tegan-mierle-fDostElVhN8-unsplash.jpg);
+}
+
+.library_img{
+  background-image: url(../img/jason-wong-PBNbMX6jtBM-unsplash.jpg);
+}
+
+.contact_img{
+  background-image:url(../img/chris-lawton-KpBXAOs80YI-unsplash.jpg); 
+  max-width: 100%;
+  min-height: 100vh;
+}
+
+.img_ams{
+  background-size:100%;
+  background-position-y:40% ;
+  width: 100vw;
+  animation: img_ams 20s  ease infinite ;
+}
+/*----------写真のアニメーション----------*/
+@keyframes img_ams{
+  0%{background-position-y:100% ;}
+
+  50%{background-position-y:0% ;}
+
+  100%{background-position-y:100% ;}
+}
+
+.header_all{
+  width: 100%;
+  height: 200px;
+  letter-spacing: 2px;
+}
+
+.home_icon img{
+  width: 50px;
+  
+}
+
+.home_icon:hover{
+  opacity: 0.5;
+  transition:0.5s;
+  transform: rotate(360deg);
+}
+
+
+.header_nav .header_ul{
+  display: flex;
+  justify-content: space-between;
+  padding:20px 50px 0 50px;
+  list-style: none;
+}
+
+.header_li{
+  display: flex;
+  align-items: center;
+} 
+
+.header_li2{
+padding-left: 50px;
+}
+
+.header_li a{
+  text-align: none;
+  text-decoration: none;
+  color: #F07818;
+  font-size: 27px;
+  font-weight:bold;
+  font-family: 'Fuzzy Bubbles', cursive;
+  transition:all 0.5s cubic-bezier(0.165,0.84,0.44,1);
+}
+
+.header_li a:hover{
+  color: #be6115;
+  text-shadow: 0 0 30px #30bee9;
+}
+
+.header_li a:active{
+  transform:translate(300px);
+  opacity:0;
+}
+
+
+.header_all .header_title{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 80px;
+  color:#FAB341;
+  font-family: 'Caveat', cursive;
+}
+
+ 
