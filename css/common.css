@@ -55,6 +55,36 @@ body{
   font-family: "Sawarabi Mincho", sans-serif;
 }
 
+.login_but button{
+ border: none;
+ border-radius: 15px;
+ background-color: #e69859;
+ animation: 2s butani ease-out infinite ;opacity:1;
+}
+@keyframes butani{
+  0% , 40% , 60% , 80% {
+    transform: scale(1.0);
+  }
+  50% , 70% {
+    transform: scale(0.97);
+  }
+} 
+
+.login_but button a {
+  text-decoration: none;
+  display: inline-block;
+  color: #5e412f;
+  letter-spacing: 2px;
+  font-family: "Sawarabi Mincho", sans-serif;
+}
+
+.login_but button:hover {
+  background-color: #b85c11;
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+
 /*----------content----------*/
 .content {
   background: linear-gradient(#FF6F00,#f7f4e0, #DB9F92);
@@ -99,9 +129,12 @@ body{
   text-align: center;
 }
 
-button {
+.but button {
  border: none;
  border-radius: 15px;
+ padding: 20px;
+ font-size: 20px;
+ font-weight: 600;
  background-color: #fab341;
  animation: 2s butani ease-out infinite ;opacity:1;
 }
@@ -114,18 +147,15 @@ button {
   }
 }
 
-button a {
+.but button a {
   text-decoration: none;
   display: inline-block;
   color: #5e412f;
-  padding: 20px;
-  font-size: 20px;
-  font-weight: 600;
   letter-spacing: 2px;
   font-family: "Sawarabi Mincho", sans-serif;
 }
 
-button:hover {
+.but button:hover {
   background-color: #f07818;
   transition: 0.5s;
   cursor: pointer;

@@ -53,19 +53,41 @@ if(!isset($_SESSION['id']) && !isset($_SESSION['name'])){
   </header>
 
 
-<!------------community----------->
+<!----------community-検索機能-投稿ページへ移動ボタン＆---------->
 <main>
   <section class="search">
-  <form action="../php/community.php" method="post">
-
+  <form action="" method="post">
+    
     <div class="search_wrapper">
-     <input class="search_inner" type="text" name="search" placeholder="キーワードを入力">
+      <div class="search_inner">
+       <input class="search_form" type="text" name="search" placeholder="キーワードを入力">
+       <div class="search_but">
+        <button type="submit">検索</button>
+      </div>
+      </div>
+      <div class="post_but">
+       <button type="submit"><a href="../php/post.php">投稿する</a></button>
+      </div> 
     </div>
-    
-    
-    
-  
   </form>
+  </section>
+
+<!------------community-投稿一覧----------->
+  <section class="community">
+
+    <div class="post_list">
+      <div class="post_list_inner">
+        <div class="post_name_wrappe">
+         <h3 class="post_name">name（仮）</h3>
+         <p class="post_time">○○/○○/○○</p>
+        </div>
+       <p class="post_content">投稿内容...</p>
+      </div>
+      <div class="post_img_wrappe">
+       <img class="post_img" src="../img/mario-purisic-jG1z5o7NCq4-unsplash.jpg"><!---仮写真--->
+      <div>
+    </div>
+
   </section>
 </main>
 </body>

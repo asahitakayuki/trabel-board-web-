@@ -1,5 +1,6 @@
 <?php
 session_start();
+require('../php/dbconnect.php');
 
 if(!isset($_SESSION['id']) && !isset($_SESSION['name'])){
    header('Location: ../php/login.php');
@@ -18,6 +19,26 @@ $error = [];
     $form['user_mail'] = filter_input(INPUT_POST, 'user_mail', FILTER_SANITIZE_EMAIL);
     if ($form['user_mail'] === ''){
         $error['user_mail'] = 'blank';
+    } else {
+      $db = dbconnect();
+      $stmt = $db->prepare('select email from members where email=?');
+      if(!$stmt){
+       die($db->error);
+      }
+    
+      $stmt->bind_param('s', $form['user_mail']);
+      $success = $stmt->execute();
+      if(!$success){
+       die($db->error);
+      }
+    
+      $stmt->bind_result($email);
+      $stmt->fetch();
+    
+      if (!$email){
+        $error['user_mail'] = 'duplicate';
+      }
+    
     }
 
     $form['your_msg'] = filter_input(INPUT_POST, 'your_msg', FILTER_SANITIZE_STRING);
@@ -95,7 +116,10 @@ $error = [];
         <label for="mail">Mail<span>メールアドレス</span><span class="required">必須</span></label>
         <input type="mail" id="mail" name="user_mail">
         <?php if(isset($error['user_mail']) && $error['user_mail'] === 'blank'):?>
-        <p class="error">* メールアドレスを入力してください</p>
+         <p class="error">* メールアドレスを入力してください</p>
+        <?php endif; ?>
+        <?php if(isset($error['user_mail']) && $error['user_mail'] === 'duplicate'):?>
+         <p class="error">* メールアドレスが誤っています。</p>
         <?php endif; ?>
       </div>
 

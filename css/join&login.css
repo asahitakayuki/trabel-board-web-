@@ -29,13 +29,6 @@ form{
   font-size: 20px;
 }
 
-span {
-  background-color: rgb(248, 46, 46);
-  color: white;
-  font-size: 15px;
-  margin-left: 20px;
-}
-
 label {
   display: inline-block;
   width: 30%;
@@ -67,7 +60,6 @@ input{
   border-radius: 25px;
   color: #5e412f;
   letter-spacing: 3px;
-  
   font-size: 18px;
   font-weight: bold;
 }

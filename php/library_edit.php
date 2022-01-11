@@ -1,5 +1,11 @@
 <?php
+session_start();
+require('../php/dbconnect.php');
 
+if(!isset($_SESSION['id']) && !isset($_SESSION['name'])){
+   header('Location: ../php/login.php');
+  exit();
+}
 $nickname = filter_input(INPUT_POST, 'nickname', FILTER_SANITIZE_STRING);
 if ($nickname === ''){
   echo '名無し';
@@ -49,7 +55,7 @@ if ($nickname === ''){
 <main>
   <form action="../php/library.php" method="post">
     <input class="name" name="nickname" placeholder="ニックネーム">
-    <p>ニックネームを入力しない場合、「名無し」に設定されます。</p>
+    <p class="error">ニックネームを設定してください</p>
     
     <div><input type="submit" value="決定"/></div>
   </form>
@@ -57,3 +63,4 @@ if ($nickname === ''){
 </main>
 </body>
 </html>
+

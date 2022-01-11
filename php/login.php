@@ -12,7 +12,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $error['email'] = 'blank';
   }
 
-  $login['password'] = filter_input(INPUT_POST , 'password', FILTER_SANITIZE_EMAIL);
+  $login['password'] = filter_input(INPUT_POST , 'password', FILTER_SANITIZE_STRING);
   if($login['password'] === ''){
     $error['password'] = 'blank';
   }
@@ -35,7 +35,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $stmt->bind_result($id, $name, $hash);
     $stmt->fetch();
     
-
     if(password_verify($login['password'], $hash)){
     
     //ログイン成功
@@ -63,7 +62,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
   <meta property="og:description" content="旅の情報を共有する掲示板サイト">
   <meta property="og:site_name" content="プログラミング教材">
   <link rel="stylesheet" type="text/css" href="../css/reset.css">
-  <link rel="stylesheet" type="text/css" href="../css/join.css">
+  <link rel="stylesheet" type="text/css" href="../css/join&login.css">
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Murecho&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Fuzzy+Bubbles:wght@700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Fuzzy+Bubbles:wght@400;700&family=Sawarabi+Mincho&display=swap"
@@ -84,7 +83,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     
 
     <div class="form_mail">
-      <label for="mail">メールアドレス<span>必須</span></label>
+      <label for="mail">メールアドレス</label>
       <input type="text" id="email" name="email">
         <?php if(isset($error['email']) && $error['email'] === 'blank'):?>
         <p class="error">* メールアドレスを入力してください</p>
@@ -92,7 +91,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     </div>
 
     <div class="form_password">
-      <label for="password">パスワード<span>必須</span></label>
+      <label for="password">パスワード</label>
       <input type="text" id="password" name="password">
       <?php if(isset($error['password']) && $error['password'] === 'blank'):?>
         <p class="error">* パスワードを入力してください</p>

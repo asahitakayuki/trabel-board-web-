@@ -1,10 +1,127 @@
 @charset "UTF-8";
 
-body{
+body {
   background-color: #fcebb6;
+  word-break: break-all;
 }
 
-/*----------community----------*/
+/*----------community-検索機能-投稿ページへ移動ボタン＆----------*/
+.search {
+  background-color: #dfc67c;
+}
 
+.search_wrapper {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 20px 20px;
+  margin: 0 10%;
+}
+
+.search_inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search_form {
+  font-size: 18px;
+  padding: 5px 5px;
+  border: none;
+}
+
+.search_but button {
+  border: none;
+  border-left: solid 1px black;
+  width: 70px;
+  padding: 5px 0;
+  pointer-events: fill;
+  cursor: pointer;
+  background-color: #ffff;
+}
+
+.search_but button:hover {
+  background-color: #d1c7bf;
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+.post_but button {
+  border: none;
+  border-radius: 25px;
+  background-color: #fab341;
+}
+
+.post_but button a {
+  text-decoration: none;
+  display: inline-block;
+  color: #5e412f;
+  padding: 10px 20px;
+  font-size: 20px;
+}
+
+.post_but button:hover {
+  background-color: #f07818;
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+/*------------community-投稿一覧-----------*/
+.community {
+  margin: auto 20%;
+}
+
+.post_list {
+  display: flex;
+  margin-top: 30px;
+  background-color: #f9f9cf;
+  width: 100%;
+  height: 150px;
+}
+
+.post_list_inner{
+  width: 80%;
+  margin-right:30px;
+}
+
+.post_name_wrappe{
+  display: flex;
+  align-items: center;
+  justify-content:space-between;
+  margin: 10px 0 0 30px;
+}
+
+.post_name{
+  color: #858D4D;
+  font-size: 30px;
+  
+}
+
+.post_time{
+  margin: 0 20px 0 0;
+  font-size:20px ;
+  
+}
+
+.post_img_wrappe{
+  width: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.post_content{
+  font-size: 20px;
+  color: #858D4D;
+  margin:10px 0 0 20px;
+  max-width: 100%;
+  height: 95px;
+  overflow: hidden;
+}
+
+.post_img{
+  width: 120px;
+  height: 120px;
+}
 
 

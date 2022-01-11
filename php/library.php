@@ -2,8 +2,11 @@
 session_start();
 require('../php/dbconnect.php');
 
-if(!isset($_SESSION['id']) && !isset($_SESSION['name'])){
-   header('Location: ../php/login.php');
+if(isset($_SESSION['id']) && isset($_SESSION['name'])){
+  $id = $_SESSION['id'];
+  $name = $_SESSION['name'];
+} else{
+  header('Location: ../php/login.php');
   exit();
 }
 
@@ -52,12 +55,8 @@ if(!isset($_SESSION['id']) && !isset($_SESSION['name'])){
 <main>
   <session class="library">
     <div class="wrapper">
-     <h2 class="name">
-       <?php if (!empty($_POST['nickname'])):?>
-       <p><?php echo htmlspecialchars ($_POST['nickname'], ENT_QUOTES);?></p>
-       <?php else: ?>
-       <?php echo '名無し'; ?>
-       <?php endif; ?>
+     <h2 class="name">   
+       <p><?php echo htmlspecialchars ($name, ENT_QUOTES);?></p>
       </h2>
       <p class="edit"><a href="../php/library_edit.php">プロフィール編集</a></p>
     </div>

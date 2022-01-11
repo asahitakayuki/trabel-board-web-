@@ -1,4 +1,83 @@
 <?php
+session_start();
+require('../php/dbconnect.php');
+
+if(isset($_SESSION['id']) && isset($_SESSION['name'])){
+  $id = $_SESSION['id'];
+  $name = $_SESSION['name'];
+} else{
+  header('Location: ../php/login.php');
+  exit();
+}
+
+$post = '';
+$error = [];
+
+
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+
+ $post = (filter_input(INPUT_POST, 'post_content', FILTER_SANITIZE_STRING));
+  if($post === ''){
+   $error['post'] = 'blank';
+  } else if(strlen($post) > 200){
+     $error['post'] = 'over';
+  }
+
+  //画像の形式チェック
+  $image = $_FILES['image'];
+
+  if ($image['name'] !== '' && $image['error'] === 0){
+   $check_type = mime_content_type($image['tmp_name']);
+    if ($check_type !== 'image/png' && $check_type !== 'image/jpeg'){ 
+     $error['image'] = 'type' ;
+    }     
+  }
+
+  //エラーチェック通過
+  if(empty($error)){
+   $db = $db = dbconnect();
+   $stmt = $db->prepare('insert into posts (members_id, message) values(?, ?)');
+    if(!$stmt){
+     die($db->error);
+    }
+   $stmt->bind_param('is', $id, $post);
+   $success = $stmt->execute();
+    if(!$success){
+     die($db->error);
+    }
+
+  //画像のアップロード
+    if ($image['name'] !== '' && $image['error'] === 0){
+     $name = $image['name'];
+     $type = $image['type'];
+     $content = file_get_contents($image['tmp_name']);
+     $size = $image['size'];
+
+     $db = dbconnect();
+     $stmt = $db->prepare('insert into images (members_id, image_name, image_type, image_content, image_size, created_at) values(?, ?, ?, ?, ?, now())');
+      if(!$stmt){
+      die($db->error);
+      echo '失敗';
+      }
+
+        
+      $stmt->bind_param('isssi', $id, $name, $type, $content, $size, );
+      /*$stmt->bindValue(':members_id', $id, PDO::PARAM_INT);
+      $stmt->bindValue(':image_name', $name, PDO::PARAM_STR);
+      $stmt->bindValue(':image_type', $type, PDO::PARAM_STR);
+      $stmt->bindValue(':image_content', $content, PDO::PARAM_STR);
+      $stmt->bindValue(':image_size', $size, PDO::PARAM_INT);*/
+
+      $success = $stmt->execute();
+      if(!$success){
+        die($db->error);
+        echo '惜しい!';
+      }
+    }
+    header('Location: ../php/community.php');
+      exit();
+  }
+}
 
 ?>
 
@@ -44,13 +123,29 @@
 
 
   <session class="post">
-    <form action="../php/library.php" method="post" enctype="multipart/form-data">
+    <form action="" method="post" enctype="multipart/form-data">
       <textarea name="post_content" placeholder="テキストを入力、写真を挿入"></textarea>
-      <input type="file" name="image" multiple>
-    
+
+      <input type="file" name="image" value="">
+      
       <div class="but">
-       <button type="submit"><a href="../php/post.php">Communityに投稿する</a></button>
+       <button type="submit">Communityに投稿する</button>
+      </div>
+      <p>写真等は、「jpeg」又は「png」の形式の画像を指定してください</p>
+
+      <div class="error_wrappe">
+      <?php if(isset($error['post']) && $error['post'] === 'blank'):?>
+      <p class="error">* テキストを入力してください</p>
+      <?php endif; ?>
+      <?php if(isset($error['image']) && $error['image'] === 'type'):?>
+      <p class="error">* 恐れ入りますが、画像を改めて指定してください</p>
+      <?php endif; ?>
+      <?php if(isset($error['post']) && $error['post'] === 'over'):?>
+      <p class="error">* 文字数が超えています</p>
+      <p class="error_int"><?php echo strlen($post) . '文字'; ?>
+      <?php endif; ?>
       </div>
     </form>
   </session>
 </body>
+</html>
