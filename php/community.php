@@ -2,11 +2,9 @@
 session_start();
 require('../php/dbconnect.php');
 if(!isset($_SESSION['id']) && !isset($_SESSION['name'])){
-   header('Location: ../php/login.php');
+  header('Location: ../php/login.php');
   exit();
 }
-
-
 
 ?>
 
@@ -73,22 +71,55 @@ if(!isset($_SESSION['id']) && !isset($_SESSION['name'])){
   </section>
 
 <!------------community-投稿一覧----------->
-  <section class="community">
+<?php
+/*if($_SERVER['REQUEST_METHOD'] === 'POST'){
+$keyword = filter_input(INPUT_POST, 'search', FILTER_SANITIZE_STRING);
+$db = dbconnect();
+$stmt = $db->prepare("select p.id, p.message, p.picture, p.time, m.name from posts p, members m where message LIKE '%" . $keyword . "%' m.id=p.members_id order by id desc");
+if(!$stmt){
+ die($db->error);
+}
+$stmt->execute();
+if (!$success) {
+ die($db->error);
+}
+}*/
+
+
+$db = dbconnect();
+$stmt = $db->prepare('select p.id, p.message, p.picture, p.time, m.name from posts p, members m where m.id=p.members_id order by id desc');
+if(!$stmt){
+  die($db->error);
+}
+$success = $stmt->execute();
+if (!$success) {
+  die($db->error);
+}
+
+$stmt->bind_result($post_id, $message, $picture, $time, $name);
+while($stmt->fetch()):
+
+?>
+  
+  <section class="community"><a href="../php/detail.php?=<?php echo $post_id ?>">
 
     <div class="post_list">
       <div class="post_list_inner">
         <div class="post_name_wrappe">
-         <h3 class="post_name">name（仮）</h3>
-         <p class="post_time">○○/○○/○○</p>
+         <h3 class="post_name"><?php echo mb_substr($name, 0, 70);?></h3>
+         <p class="post_time"><?php echo $time ;?></p>
         </div>
-       <p class="post_content">投稿内容...</p>
+       <p class="post_content"><?php echo $message ;?></p>
       </div>
       <div class="post_img_wrappe">
-       <img class="post_img" src="../img/mario-purisic-jG1z5o7NCq4-unsplash.jpg"><!---仮写真--->
+      <?php if ($picture) :?>
+       <img class="post_img" src="../post_img/<?php echo $picture ;?>">
+      <?php endif ;?>
       <div>
     </div>
-
-  </section>
+  </a></section>
+  
+<?php endwhile; ?>
 </main>
 </body>
 </html>

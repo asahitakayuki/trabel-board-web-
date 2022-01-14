@@ -5,7 +5,7 @@ require('../php/dbconnect.php');
 if(isset($_SESSION['id']) && isset($_SESSION['name'])){
   $id = $_SESSION['id'];
   $name = $_SESSION['name'];
-} else{
+} else{ 
   header('Location: ../php/login.php');
   exit();
 }
@@ -13,10 +13,9 @@ if(isset($_SESSION['id']) && isset($_SESSION['name'])){
 $post = '';
 $error = [];
 
-
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
-
- $post = (filter_input(INPUT_POST, 'post_content', FILTER_SANITIZE_STRING));
+  //メッセージのエラーチェック
+  $post = (filter_input(INPUT_POST, 'post_content', FILTER_SANITIZE_STRING));
   if($post === ''){
    $error['post'] = 'blank';
   } else if(strlen($post) > 200){
@@ -25,57 +24,35 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
   //画像の形式チェック
   $image = $_FILES['image'];
-
   if ($image['name'] !== '' && $image['error'] === 0){
-   $check_type = mime_content_type($image['tmp_name']);
+    $check_type = mime_content_type($image['tmp_name']);
     if ($check_type !== 'image/png' && $check_type !== 'image/jpeg'){ 
      $error['image'] = 'type' ;
-    }     
+    }
   }
-
+  
   //エラーチェック通過
   if(empty($error)){
-   $db = $db = dbconnect();
-   $stmt = $db->prepare('insert into posts (members_id, message) values(?, ?)');
+    //画像のアップロード
+    if($image['name'] !== ''){
+      if (!move_uploaded_file($image['tmp_name'], '../post_img/' . $image['name'])){
+      die('ファイルのアップロードに失敗しました');
+      }
+    }
+  
+   $db = dbconnect();
+   $stmt = $db->prepare('insert into posts (members_id, message, picture) values(?, ?, ?)');
     if(!$stmt){
      die($db->error);
     }
-   $stmt->bind_param('is', $id, $post);
+   $stmt->bind_param('iss', $id, $post, $image['name']);
    $success = $stmt->execute();
     if(!$success){
      die($db->error);
     }
 
-  //画像のアップロード
-    if ($image['name'] !== '' && $image['error'] === 0){
-     $name = $image['name'];
-     $type = $image['type'];
-     $content = file_get_contents($image['tmp_name']);
-     $size = $image['size'];
-
-     $db = dbconnect();
-     $stmt = $db->prepare('insert into images (members_id, image_name, image_type, image_content, image_size, created_at) values(?, ?, ?, ?, ?, now())');
-      if(!$stmt){
-      die($db->error);
-      echo '失敗';
-      }
-
-        
-      $stmt->bind_param('isssi', $id, $name, $type, $content, $size, );
-      /*$stmt->bindValue(':members_id', $id, PDO::PARAM_INT);
-      $stmt->bindValue(':image_name', $name, PDO::PARAM_STR);
-      $stmt->bindValue(':image_type', $type, PDO::PARAM_STR);
-      $stmt->bindValue(':image_content', $content, PDO::PARAM_STR);
-      $stmt->bindValue(':image_size', $size, PDO::PARAM_INT);*/
-
-      $success = $stmt->execute();
-      if(!$success){
-        die($db->error);
-        echo '惜しい!';
-      }
-    }
-    header('Location: ../php/community.php');
-      exit();
+   header('Location: ../php/community.php');
+   exit();
   }
 }
 
@@ -121,7 +98,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     </nav>
   </header>
 
-
+  <!----------投稿内容を記述して送信する---------->
   <session class="post">
     <form action="" method="post" enctype="multipart/form-data">
       <textarea name="post_content" placeholder="テキストを入力、写真を挿入"></textarea>
