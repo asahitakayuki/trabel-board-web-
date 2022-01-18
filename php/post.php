@@ -2,6 +2,11 @@
 session_start();
 require('../php/dbconnect.php');
 
+//uuid
+require_once '../vendor/autoload.php';
+  use Ramsey\Uuid\Uuid;
+
+
 if(isset($_SESSION['id']) && isset($_SESSION['name'])){
   $id = $_SESSION['id'];
   $name = $_SESSION['name'];
@@ -18,7 +23,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
   $post = (filter_input(INPUT_POST, 'post_content', FILTER_SANITIZE_STRING));
   if($post === ''){
    $error['post'] = 'blank';
-  } else if(strlen($post) > 200){
+  } else if(mb_strlen($post) > 300){
      $error['post'] = 'over';
   }
 
@@ -32,12 +37,21 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
   }
   
   //エラーチェック通過
+
   if(empty($error)){
     //画像のアップロード
     if($image['name'] !== ''){
-      if (!move_uploaded_file($image['tmp_name'], '../post_img/' . $image['name'])){
-      die('ファイルのアップロードに失敗しました');
-      }
+      
+     $check_type = mime_content_type($image['tmp_name']);
+      if($check_type === 'image/jpeg'){ //形式をチェックする
+      $uuid = Uuid::uuid4() . '.jpg';
+    } else {
+      $uuid = Uuid::uuid4() . '.png';
+    }
+
+     if (!move_uploaded_file($image['tmp_name'], '../post_img/'. $uuid)){
+     die('ファイルのアップロードに失敗しました');
+     }
     }
   
    $db = dbconnect();
@@ -45,7 +59,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     if(!$stmt){
      die($db->error);
     }
-   $stmt->bind_param('iss', $id, $post, $image['name']);
+   $stmt->bind_param('iss', $id, $post, $uuid);
    $success = $stmt->execute();
     if(!$success){
      die($db->error);
@@ -77,6 +91,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
   <link href="https://fonts.googleapis.com/css2?family=Fuzzy+Bubbles:wght@700&display=swap" rel="stylesheet">
 
   <title>Trabel Board ~旅の掲示板~</title>
+  
+
 </head>
 
 

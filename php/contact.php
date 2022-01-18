@@ -2,8 +2,11 @@
 session_start();
 require('../php/dbconnect.php');
 
-if(!isset($_SESSION['id']) && !isset($_SESSION['name'])){
-   header('Location: ../php/login.php');
+if(isset($_SESSION['id']) && isset($_SESSION['name'])){
+  $id = $_SESSION['id'];
+  $name = $_SESSION['name'];
+} else{ 
+  header('Location: ../php/login.php');
   exit();
 }
 

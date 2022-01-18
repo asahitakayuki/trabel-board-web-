@@ -12,9 +12,9 @@ body{
 }
 
 .name{
-  font-size: 45px;
+  font-size: 50px;
   color:#5e412f;
-  padding-right: 30px;
+  letter-spacing: 5px;
 }
 
 .wrapper .edit a{
@@ -27,29 +27,33 @@ body{
   transition: 0.5s;
 }
 
-.inner{
+.user_info{
   display: flex;
   justify-content: space-around;
   align-items: center;
-  margin-top: 50px;
+  margin:50px 0 ;
 }
 
-.inner p{
-  font-size: 25px;
+.user_info p{
+  font-size: 28px;
   color:#f07818;
 }
 
-.inner p a{
+.user_info p span{
+  margin-left:15px;
+}
+
+.user_info p a{
   color:#f07818;
 }
 
-button {
+.post_but button {
  border: none;
  border-radius: 25px;
  background-color: #fab341;
 }
 
-button a {
+.post_but button a {
   text-decoration: none;
   display: inline-block;
   color: #5e412f;
@@ -57,7 +61,7 @@ button a {
   font-size: 20px;
 }
 
-button:hover {
+.post_but button:hover {
   background-color: #f07818;
   transition: 0.5s;
   cursor: pointer

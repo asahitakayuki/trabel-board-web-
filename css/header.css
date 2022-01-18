@@ -74,7 +74,7 @@
 padding-left: 50px;
 }
 
-.header_li a{
+.header_li .header_li2 a{
   text-align: none;
   text-decoration: none;
   color: #F07818;
@@ -89,7 +89,7 @@ padding-left: 50px;
   text-shadow: 0 0 30px #30bee9;
 }
 
-.header_li a:active{
+.header_li .header_li2 a:active{
   transform:translate(300px);
   opacity:0;
 }

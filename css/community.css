@@ -98,12 +98,23 @@ body {
 .post_name{
   color: #858D4D;
   font-size: 30px;
+  letter-spacing: 3px;
 }
 
 .post_time{
   margin: 0 20px 0 0;
   font-size:20px ;
   color:#858D4D;
+}
+
+.post_content{
+  font-size: 22px;
+  letter-spacing: 5px;
+  line-height:1.3;
+  color: #858D4D;
+  margin:10px 0 0 20px;
+  height: 95px;
+  overflow: hidden;
 }
 
 .post_img_wrappe{
@@ -113,12 +124,8 @@ body {
   align-items: center;
 }
 
-.post_content{
-  font-size: 20px;
-  color: #858D4D;
-  margin:10px 0 0 20px;
-  height: 95px;
-  overflow: hidden;
+.post_img_a{
+  margin-right:15px;
 }
 
 .post_img{
@@ -126,4 +133,37 @@ body {
   height: 120px;
 }
 
+.page{
+  display: flex;
+  justify-content: center;
+  margin:50px 0;
+}
 
+.page_but button{
+  border-radius: 50px;
+  background-color: #fab341;
+  border: none;
+  
+}
+
+.page_but button a{
+  text-decoration: none;
+  padding: 15px;
+  font-size: 25px;
+  display: inline-block;
+  color:#5e412f;
+}
+
+.page_but button:hover{
+  background-color: #f07818;
+  transition: 1s;
+  cursor: pointer;
+}
+
+.page_back{
+  margin-right: 20px;
+}
+
+.page_next{
+  margin-left:20px;
+}

@@ -27,6 +27,7 @@ if(!isset($_SESSION['id']) && !isset($_SESSION['name'])){
   <link href="https://fonts.googleapis.com/css2?family=Fuzzy+Bubbles:wght@700&display=swap" rel="stylesheet">
   
   <title>Trabel Board ~旅の掲示板~</title>
+
 </head>
 
 
@@ -72,54 +73,79 @@ if(!isset($_SESSION['id']) && !isset($_SESSION['name'])){
 
 <!------------community-投稿一覧----------->
 <?php
-/*if($_SERVER['REQUEST_METHOD'] === 'POST'){
-$keyword = filter_input(INPUT_POST, 'search', FILTER_SANITIZE_STRING);
-$db = dbconnect();
-$stmt = $db->prepare("select p.id, p.message, p.picture, p.time, m.name from posts p, members m where message LIKE '%" . $keyword . "%' m.id=p.members_id order by id desc");
-if(!$stmt){
- die($db->error);
-}
-$stmt->execute();
-if (!$success) {
- die($db->error);
-}
-}*/
+
+ $db = dbconnect();
+
+ //最大ページ数を求める
+$count = $db->query('select count(*) as cnt from posts');
+$count = $count->fetch_assoc();
+$max_page = floor(($count['cnt']-1)/10+1);
 
 
-$db = dbconnect();
-$stmt = $db->prepare('select p.id, p.message, p.picture, p.time, m.name from posts p, members m where m.id=p.members_id order by id desc');
-if(!$stmt){
-  die($db->error);
-}
-$success = $stmt->execute();
-if (!$success) {
-  die($db->error);
-}
+ if($_SERVER['REQUEST_METHOD'] !== 'POST'){ 
+ $stmt = $db->prepare('select p.id, p.message, p.picture, p.time, m.name from posts  p, members m where m.id=p.members_id order by id desc limit ?, 10');
+ } else { //検索機能部分
+ $keyword = filter_input(INPUT_POST, 'search', FILTER_SANITIZE_STRING);
+ $stmt = $db->prepare('SELECT p.id, p.message, p.picture, p.time, m.name 
+ FROM posts AS p LEFT JOIN members AS m ON m.id=p.members_id WHERE p.message LIKE  "%' . h($keyword) . '%" ORDER BY p.id DESC limit ?, 10');
+ }
+
+  
+  $page = filter_input(INPUT_GET, 'page', FILTER_SANITIZE_NUMBER_INT);
+  if(!$page){
+    $page = 1;
+  }
+  $start = ($page - 1) * 10;
+  $stmt->bind_param('i', $start);
+  $success = $stmt->execute();
+  if(!$success){
+   die($db->error);
+  }
 
 $stmt->bind_result($post_id, $message, $picture, $time, $name);
-while($stmt->fetch()):
-
+ while($stmt->fetch()):
 ?>
   
-  <section class="community"><a href="../php/detail.php?=<?php echo $post_id ?>">
-
+  <section class="community">
+    <a href="../php/detail.php?id=<?php echo $post_id ?>">
     <div class="post_list">
       <div class="post_list_inner">
         <div class="post_name_wrappe">
-         <h3 class="post_name"><?php echo mb_substr($name, 0, 70);?></h3>
-         <p class="post_time"><?php echo $time ;?></p>
+         <h3 class="post_name"><?php echo h($name);?></h3>
+         <p class="post_time"><?php echo h($time) ;?></p>
         </div>
-       <p class="post_content"><?php echo $message ;?></p>
+       <p class="post_content">
+         <?php if(mb_strlen($message) > 65){
+          echo mb_substr(h($message), 0, 65 ) . '.....';
+         } else{
+          echo h($message);
+         } ?>
+       </p>
       </div>
       <div class="post_img_wrappe">
       <?php if ($picture) :?>
-       <img class="post_img" src="../post_img/<?php echo $picture ;?>">
+      <a href="../post_img/<?php echo $picture ;?>" class="post_img_a" data-lightbox="group"><img class="post_img" src="../post_img/<?php echo $picture ;?>"></a>
       <?php endif ;?>
       <div>
     </div>
-  </a></section>
-  
+  </a>
+</section>
 <?php endwhile; ?>
+
+<div class="page">
+  <?php if($page > 1): ?>
+  <div class="page_but page_back">
+   <button type="submit"><a href="?page=<?php echo $page-1;?>"><?php echo $page-1;?></a>
+  </div>
+  <?php endif; ?>
+
+  <?php if($page < $max_page): ?>
+  <div class="page_but page_next">
+   <button type="submit"><a href="?page=<?php echo $page+1;?>"><?php echo $page+1;?></a>
+  </div>
+  <?php endif; ?>
+</div>
+
 </main>
 </body>
 </html>

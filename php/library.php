@@ -27,6 +27,7 @@ if(isset($_SESSION['id']) && isset($_SESSION['name'])){
   <link rel="stylesheet" type="text/css" href="../css/reset.css">
   <link rel="stylesheet" type="text/css" href="../css/header.css">
   <link rel="stylesheet" type="text/css" href="../css/library.css">
+  <link rel="stylesheet" type="text/css" href="../css/detail&library.css">
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Murecho&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Fuzzy+Bubbles:wght@700&display=swap" rel="stylesheet">
 
@@ -52,27 +53,80 @@ if(isset($_SESSION['id']) && isset($_SESSION['name'])){
     </nav>
     <h2 class="header_title">Library</h2>
   </header>
-<main>
+
+  <?php
+  //投稿件数を取り出す
+
+  
+
+  $db = dbconnect();
+  $stmt = $db->prepare('select count(*) as cnt from posts where members_id=?');
+  if(!$stmt){
+   die($db->error);
+  }
+
+  $stmt->bind_param('i', $id);
+  $success = $stmt->execute();
+  if(!$success){
+    die($db->error);
+  }
+
+  $stmt->bind_result($cnt);
+  $stmt->fetch();
+  
+  ?>
+
+  <!----------library---------->
   <session class="library">
     <div class="wrapper">
      <h2 class="name">   
-       <p><?php echo htmlspecialchars ($name, ENT_QUOTES);?></p>
+       <p><?php echo h($name);?></p>
       </h2>
-      <p class="edit"><a href="../php/library_edit.php">プロフィール編集</a></p>
+      
     </div>
     
-    <div class="inner">
-     <p>投稿数<?php echo '○○'; ?></p>
-     <p>いいね数<?php echo '○○'; ?></p>
+    <div class="user_info">
+     <p>投稿数<span><?php echo $cnt ; ?></span></p>
+     <p>いいね数<span><?php echo '○○'; ?></span></p>
      <p><a href="">いいねした投稿を見る</a></p>
-     <div class="but">
+     <div class="post_but">
        <button type="submit"><a href="../php/post.php">投稿する</a></button>
       </div>
     </div>
-
-
-
   </session>
-</main>
+
+<?php
+//投稿内容を表示する
+$db = dbconnect();
+$stmt = $db->prepare('select p.message, p.picture, p.time from posts as p where members_id=? order by id desc');
+
+$stmt->bind_param('i', $id);
+$success = $stmt->execute();
+if(!$success){
+ die($db->error);
+}
+
+$stmt->bind_result($message, $picture, $time);
+while($stmt->fetch()):
+?>
+
+<session class="post_content">
+  <div class="detail_content">
+    <div class="detail_name_wrappe">
+     <p class="detail_time"><?php echo h($time); ?></p>
+    </div>
+      
+    <?php if ($picture) :?>
+    <div class="detail_img_wrappe">
+     <a href="../post_img/<?php echo $picture ;?>" data-lightbox="group"><img class="detail_img" src="../post_img/<?php echo $picture ;?>"></a>
+    </div>
+    <?php endif ;?>
+
+    <div class="detail_message_wrappe">
+     <p class="detail_message"><?php echo h($message); ?></p>
+    </div>
+  </div>  
+</session>
+<?php endwhile; ?>
 </body>
 </html>

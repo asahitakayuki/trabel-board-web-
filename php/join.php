@@ -10,8 +10,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
  $join['name'] = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
  if($join['name'] === ''){
    $error['name'] = 'blank';
+ }  else if (mb_strlen($join['name']) > 12){
+   $error['name'] = 'name_length';
  }
-
+ 
 
  $join['email'] = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
   if($join['email'] === ''){
@@ -40,7 +42,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
  if($join['password'] === ''){
   $error['password'] = 'blank';
  } else if (strlen($join['password']) < 4){
-   $error['password'] = 'length';
+   $error['password'] = 'pass_length';
   }
 
   
@@ -92,7 +94,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
   <secssion class="join">
     <div class="join_text_wrappe">
      <h2 class="join_text">ユーザー登録</h2>
-     <p>ニックネーム、メールアドレス、パスワードをご記入しユーザー登録を行って下さい。</p>
+     <p>ニックネーム、メールアドレス、パスワードをご記入しユーザー登録を行って下さい。<br>（ニックネームは12文字以内、パスワードは4文字以上で入力してください）</p>
     </div>
     
    <form action="" method="post">
@@ -100,8 +102,12 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     <div class="form_name">
       <label for="name">ニックネーム</label>
       <input type="text" id="name" name="name">
+
       <?php if(isset($error['name']) && $error['name'] === 'blank'):?>
         <p class="error">* ニックネームを入力してください</p>
+      <?php endif; ?>
+      <?php if (isset($error['name']) && $error['name'] === 'name_length'): ?>
+        <p class="error">* ニックネームは12文字以内で入力してください</p>
       <?php endif; ?>
     </div>
 
@@ -122,7 +128,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
       <?php if(isset($error['password']) && $error['password'] === 'blank'):?>
         <p class="error">* パスワードを入力してください</p>
       <?php endif; ?>
-      <?php if (isset($error['password']) && $error['password'] === 'length'): ?>
+      <?php if (isset($error['password']) && $error['password'] === 'pass_length'): ?>
         <p class="error">* パスワードは4文字以上で入力してください</p>
       <?php endif; ?>
     </div>
