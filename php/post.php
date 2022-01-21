@@ -41,9 +41,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
   if(empty($error)){
     //画像のアップロード
     if($image['name'] !== ''){
-      
-     $check_type = mime_content_type($image['tmp_name']);
-      if($check_type === 'image/jpeg'){ //形式をチェックする
+
+     $check_type = mime_content_type($image['tmp_name']);//形式をチェックする
+      if($check_type === 'image/jpeg'){ 
       $uuid = Uuid::uuid4() . '.jpg';
     } else {
       $uuid = Uuid::uuid4() . '.png';

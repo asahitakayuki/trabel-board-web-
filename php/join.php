@@ -94,26 +94,30 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
   <secssion class="join">
     <div class="join_text_wrappe">
      <h2 class="join_text">ユーザー登録</h2>
-     <p>ニックネーム、メールアドレス、パスワードをご記入しユーザー登録を行って下さい。<br>（ニックネームは12文字以内、パスワードは4文字以上で入力してください）</p>
+     <p>ニックネーム、メールアドレス、パスワードをご記入しユーザー登録を行って下さい。</p>
     </div>
     
    <form action="" method="post">
      
     <div class="form_name">
       <label for="name">ニックネーム</label>
-      <input type="text" id="name" name="name">
+      <input type="text" id="name" name="name" value="">
 
+      <?php if (isset($error['name']) && $error['name'] === 'name_length'): ?>
+        <p class="error">* ニックネームは12文字以内で入力してください</p>
+      <?php else: ?>
+        <p>ニックネームは12文字以内で入力してください</p>
+      <?php endif; ?>  
       <?php if(isset($error['name']) && $error['name'] === 'blank'):?>
         <p class="error">* ニックネームを入力してください</p>
       <?php endif; ?>
-      <?php if (isset($error['name']) && $error['name'] === 'name_length'): ?>
-        <p class="error">* ニックネームは12文字以内で入力してください</p>
-      <?php endif; ?>
+      
     </div>
 
     <div class="form_mail">
       <label for="mail">メールアドレス</label>
-      <input type="text" id="mail" name="email">
+      <?php $d = ''; ?>
+      <input type="text" id="mail" name="email" value="">
         <?php if(isset($error['email']) && $error['email'] === 'blank'):?>
         <p class="error">* メールアドレスを入力してください</p>
         <?php endif; ?>
@@ -124,13 +128,17 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     <div class="form_password">
       <label for="password">パスワード</label>
-      <input type="password" id="password" name="password">
+      <input type="password" id="password" name="password" value="">
+
+      <?php if (isset($error['password']) && $error['password'] === 'pass_length'): ?>
+        <p class="error">* パスワードは4文字以上で入力してください</p>
+      <?php else :?>
+        <p>パスワードは4文字以上で入力してください</p>
+      <?php endif; ?>  
       <?php if(isset($error['password']) && $error['password'] === 'blank'):?>
         <p class="error">* パスワードを入力してください</p>
       <?php endif; ?>
-      <?php if (isset($error['password']) && $error['password'] === 'pass_length'): ?>
-        <p class="error">* パスワードは4文字以上で入力してください</p>
-      <?php endif; ?>
+      
     </div>
 
     <div class="but">

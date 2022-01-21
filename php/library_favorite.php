@@ -60,26 +60,9 @@ if(isset($_SESSION['id']) && isset($_SESSION['name'])){
   </header>
 
   <?php
-  //投稿件数を取り出す
-
-  $db = dbconnect();
-  $stmt = $db->prepare('select count(*) as cnt from posts where members_id=?');
-  if(!$stmt){
-   die($db->error);
-  }
-
-  $stmt->bind_param('i', $id);
-  $success = $stmt->execute();
-  if(!$success){
-    die($db->error);
-  }
-
-  $stmt->bind_result($cnt);
-  $stmt->fetch();
-  
   //いいね数を取り出す
   $db = dbconnect();
-  $stmt = $db->prepare('SELECT COUNT(*) FROM posts AS p RIGHT JOIN likes AS l ON p.id=l.posts_id WHERE p.members_id=?');
+  $stmt = $db->prepare('SELECT COUNT(*) FROM likes WHERE members_id=?');
   if(!$stmt){
    die($db->error);
   }
@@ -89,7 +72,7 @@ if(isset($_SESSION['id']) && isset($_SESSION['name'])){
     die($db->error);
   }
 
-  $stmt->bind_result($like_cnt);
+  $stmt->bind_result($favorite_cnt);
   $stmt->fetch();
 
   ?>
@@ -105,12 +88,12 @@ if(isset($_SESSION['id']) && isset($_SESSION['name'])){
     
     <div class="user_info_wrappe">
     <div class="user_info">
-     <p>投稿数<span><?php echo $cnt ; ?></span></p>
-     <p>いいね数<span><?php echo $like_cnt; ?></span></p>
+     <p>いいねした数<span><?php echo $favorite_cnt; ?></span></p>
 
       <div class="post_but">
-       <button type="submit"><a href="../php/library_favorite.php">いいねした投稿を見る</a></button>
+       <button type="submit"><a href="../php/library.php">戻る</a></button>
       </div>
+
       <div class="post_but">
        <button type="submit"><a href="../php/post.php">投稿する</a></button>
       </div>
@@ -121,7 +104,7 @@ if(isset($_SESSION['id']) && isset($_SESSION['name'])){
 <?php
 //投稿内容を表示する
 $db = dbconnect();
-$stmt = $db->prepare('select p.message, p.picture, p.time from posts as p where members_id=? order by id desc');
+$stmt = $db->prepare('SELECT p.message, p.picture, p.time from likes as l right join posts as p on p.id=l.posts_id where l.members_id=? order by l.id desc');
 
 $stmt->bind_param('i', $id);
 $success = $stmt->execute();

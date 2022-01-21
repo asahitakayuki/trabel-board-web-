@@ -10,9 +10,17 @@ body{
   align-items: center;
 }
 
+.join{
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
 .join_text{
   font-size: 45px;
   color: #f07818;
+  font-family: none;
+  letter-spacing: 5px;
+  
 }
 
 .join_text_wrappe p{
@@ -41,11 +49,12 @@ input{
   box-sizing: border-box;
   width: 50%;
   background: rgba(255, 255, 255, 0.37);
-  border: none;
+  border: 1px solid black;
   border-radius: 5px;
   margin-bottom: 10px;
   padding: 10px 0;
   font-size: 20px;
+  outline: none;
 }
 
 .but {

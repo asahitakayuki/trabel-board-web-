@@ -6,6 +6,8 @@ if(!isset($_SESSION['id']) && !isset($_SESSION['name'])){
   exit();
 }
 
+$keyword = '';
+
 ?>
 
 <!DOCTYPE html>
@@ -49,6 +51,7 @@ if(!isset($_SESSION['id']) && !isset($_SESSION['name'])){
       </ul>
     </nav>
     <h2 class="header_title">Community</h2>
+
   </header>
 
 
@@ -59,10 +62,10 @@ if(!isset($_SESSION['id']) && !isset($_SESSION['name'])){
     
     <div class="search_wrapper">
       <div class="search_inner">
-       <input class="search_form" type="text" name="search" placeholder="キーワードを入力">
+       <input class="search_form" type="text" name="search" value="<?php echo h($keyword) ;?>" placeholder="キーワードを入力">
        <div class="search_but">
         <button type="submit">検索</button>
-      </div>
+       </div>
       </div>
       <div class="post_but">
        <button type="submit"><a href="../php/post.php">投稿する</a></button>
@@ -83,40 +86,64 @@ $max_page = floor(($count['cnt']-1)/10+1);
 
 
  if($_SERVER['REQUEST_METHOD'] !== 'POST'){ 
+ 
  $stmt = $db->prepare('select p.id, p.message, p.picture, p.time, m.name from posts  p, members m where m.id=p.members_id order by id desc limit ?, 10');
- } else { //検索機能部分
- $keyword = filter_input(INPUT_POST, 'search', FILTER_SANITIZE_STRING);
+
+ $stmt->bind_param('i', $start);
+
+ } else { 
+ //検索機能部分
+ $word = filter_input(INPUT_POST, 'search', FILTER_SANITIZE_STRING);
+ $keyword = "%$word%" ;
  $stmt = $db->prepare('SELECT p.id, p.message, p.picture, p.time, m.name 
- FROM posts AS p LEFT JOIN members AS m ON m.id=p.members_id WHERE p.message LIKE  "%' . h($keyword) . '%" ORDER BY p.id DESC limit ?, 10');
+ FROM posts AS p LEFT JOIN members AS m ON m.id=p.members_id WHERE p.message LIKE ? ORDER BY p.id DESC limit ?, 10');
+
+ $stmt->bind_param('si', $keyword, $start);
  }
 
-  
-  $page = filter_input(INPUT_GET, 'page', FILTER_SANITIZE_NUMBER_INT);
+ $page = filter_input(INPUT_GET, 'pagenation', FILTER_SANITIZE_NUMBER_INT);
   if(!$page){
     $page = 1;
   }
   $start = ($page - 1) * 10;
-  $stmt->bind_param('i', $start);
+
+  
+  
   $success = $stmt->execute();
   if(!$success){
    die($db->error);
   }
+ $stmt->bind_result($post_id, $message, $picture, $time, $name);
 
-$stmt->bind_result($post_id, $message, $picture, $time, $name);
+//1つの投稿の合計いいね数
+ /*$likes = $db->prepare('SELECT count(*) as cnt from likes where posts_id=?');
+  if(!$likes){
+   die($db->error);
+  }
+  $likes->bind_param('i', $post_id);
+  $likes_exe = $stmt->execute();
+  if(!$likes_exe){
+   die($db->error);
+  }
+  $likes->bind_result($likes_post_cnt);
+  while($likes->fetch()){
+  }*/
+  
  while($stmt->fetch()):
 ?>
   
   <section class="community">
-    <a href="../php/detail.php?id=<?php echo $post_id ?>">
+    <a href="../php/detail.php?page=<?php echo $post_id ?>">
     <div class="post_list">
       <div class="post_list_inner">
         <div class="post_name_wrappe">
          <h3 class="post_name"><?php echo h($name);?></h3>
+         <p class="post_good">いいね○○</p>
          <p class="post_time"><?php echo h($time) ;?></p>
         </div>
        <p class="post_content">
-         <?php if(mb_strlen($message) > 65){
-          echo mb_substr(h($message), 0, 65 ) . '.....';
+         <?php if(mb_strlen($message) > 80){
+          echo mb_substr(h($message), 0, 80 ) . '.....';
          } else{
           echo h($message);
          } ?>
@@ -124,7 +151,7 @@ $stmt->bind_result($post_id, $message, $picture, $time, $name);
       </div>
       <div class="post_img_wrappe">
       <?php if ($picture) :?>
-      <a href="../post_img/<?php echo $picture ;?>" class="post_img_a" data-lightbox="group"><img class="post_img" src="../post_img/<?php echo $picture ;?>"></a>
+      <a href="../post_img/<?php echo $picture ;?>" class="post_img_a" data-lightbox="group" ><img class="post_img" src="../post_img/<?php echo $picture ;?>"></a>
       <?php endif ;?>
       <div>
     </div>
@@ -135,13 +162,13 @@ $stmt->bind_result($post_id, $message, $picture, $time, $name);
 <div class="page">
   <?php if($page > 1): ?>
   <div class="page_but page_back">
-   <button type="submit"><a href="?page=<?php echo $page-1;?>"><?php echo $page-1;?></a>
+   <button type="submit"><a href="?pagenation=<?php echo $page-1;?>"><?php echo $page-1;?></a>
   </div>
   <?php endif; ?>
 
   <?php if($page < $max_page): ?>
   <div class="page_but page_next">
-   <button type="submit"><a href="?page=<?php echo $page+1;?>"><?php echo $page+1;?></a>
+   <button type="submit"><a href="?pagenation=<?php echo $page+1;?>"><?php echo $page+1;?></a>
   </div>
   <?php endif; ?>
 </div>

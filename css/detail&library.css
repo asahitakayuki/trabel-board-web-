@@ -1,7 +1,8 @@
 @charset "UTF-8";
 
 body{
-  background-color: #fcebb6;
+  background-color: #fcebb6; 
+  overflow-y: scroll;
 }
 
 header{
@@ -40,7 +41,7 @@ header{
 }
 
 .detail_img{
-  padding-left:100px;
+  margin-left: 20px;
   padding-bottom: 20px;
   width: 250px;
   height: 250px;
@@ -53,7 +54,7 @@ header{
 
 .detail_message{
   width:100%;
-  padding-bottom: 50px;
+  padding-bottom: 25px;
   font-size: 20px;
   letter-spacing:5px;
   line-height:2;
@@ -66,3 +67,58 @@ header{
   text-align: center;
 }
 
+form{
+  width:65%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.but {
+  display: flex;
+  justify-content:space-around;
+  align-items: center;
+  padding-bottom:25px;
+}
+
+/*戻るボタン*/
+.back_but_wrappe .back_but {
+  border: none;
+  border-radius: 25px;
+  background-color: #fab341;
+}
+
+.back_but_wrappe .back_but a {
+  text-decoration: none;
+  display: inline-block;
+  color: #5e412f;
+  padding: 5px 10px;
+  font-size: 20px;
+}
+
+.back_but_wrappe .back_but:hover {
+  background-color: #f07818;
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+/*いいねボタン*/
+.good_but .none , .good_but .red {
+  border: none;
+  background-color: #ffffff00;
+  border-radius: 25px;
+  padding: 5px;
+  font-size: 20px;
+}
+
+.good_but .none:hover , .good_but .red:hover{
+  opacity: 0.5;
+  transition:0.5s;
+}
+
+.good_but .red{
+  background-color: #ff5781;
+}
+
+span{
+  font-size: 20px;
+}
