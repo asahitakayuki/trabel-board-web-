@@ -25,12 +25,15 @@ if(isset($_SESSION['id']) && isset($_SESSION['name'])){
   <meta property="og:type" content="article">
   <meta property="og:description" content="旅の情報を共有する掲示板サイト">
   <meta property="og:site_name" content="プログラミング教材">
+  <link rel="icon" type="image/png" href="../img/k0754_5.png" >
   <link rel="stylesheet" type="text/css" href="../css/reset.css">
   <link rel="stylesheet" type="text/css" href="../css/header.css">
   <link rel="stylesheet" type="text/css" href="../css/detail&library.css">
   <link rel="stylesheet" type="text/css" href="../css/footer.css">
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Murecho&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Fuzzy+Bubbles:wght@700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fuzzy+Bubbles:wght@400;700&family=Sawarabi+Mincho&display=swap"
+    rel="stylesheet">
 
   <title>Trabel Board ~旅の掲示板~</title>
 
@@ -41,6 +44,7 @@ if(isset($_SESSION['id']) && isset($_SESSION['name'])){
 </head>
 
 <body>
+<div class="container">
 
   <!----------header--------->
   <header>
@@ -60,8 +64,8 @@ if(isset($_SESSION['id']) && isset($_SESSION['name'])){
   </header>
 
   
-  <?php
-//いいね機能
+ <?php
+ //いいね機能
  $post_id = $_GET['page'];
  $my_like_cnt = '';
  if($_SERVER['REQUEST_METHOD'] === 'POST'){ 
@@ -81,8 +85,6 @@ if(isset($_SESSION['id']) && isset($_SESSION['name'])){
   $stmt->fetch();
    
   //いいねのデータを挿入or削除
-    
-
   if ($my_like_cnt < 1) {
     $db = dbconnect();
     $stmt = $db->prepare('INSERT INTO likes (posts_id, members_id) VALUES (?, ?)');
@@ -90,7 +92,7 @@ if(isset($_SESSION['id']) && isset($_SESSION['name'])){
      die($db->error);
     }
     $stmt->bind_param('ii', $post_id, $id);
-     
+
     $success = $stmt->execute();
     if(!$success){
      die($db->error);
@@ -114,7 +116,7 @@ if(isset($_SESSION['id']) && isset($_SESSION['name'])){
     header("Location: ../php/detail.php?page={$post_id}");   
     exit();
   } 
-}else{
+} else {
   //いいね押す前に、過去にいいね済みであるか確認
   $db = dbconnect();
   $stmt = $db->prepare('SELECT COUNT(*) AS cnt FROM likes WHERE posts_id=? AND members_id=?');
@@ -129,13 +131,13 @@ if(isset($_SESSION['id']) && isset($_SESSION['name'])){
   $stmt->bind_result($my_like_cnt);
   $stmt->fetch();
 }
-  
-  //1つの投稿の合計いいね数
+
+  //1つの投稿の合計いいね数を数える
   $db = dbconnect();
- $stmt = $db->prepare('SELECT count(*) as cnt from likes where posts_id=?');
-if(!$stmt){
- die($db->error);
-}
+  $stmt = $db->prepare('SELECT count(*) as cnt from likes where posts_id=?');
+  if(!$stmt){
+   die($db->error);
+  }
 $stmt->bind_param('i', $post_id);
 $success = $stmt->execute();
 if(!$success){
@@ -148,7 +150,7 @@ $stmt->fetch();
 
 //----------相手の投稿内容を閲覧---------
   $db = dbconnect();
-  $stmt = $db->prepare('select p.id, p.message, p.picture, p.time, m.name from posts p, members m where p.id=? and m.id=p.members_id ');
+  $stmt = $db->prepare('select p.id, p.message, p.picture, p.time, m.name, m.id from posts p, members m where p.id=? and m.id=p.members_id ');
   if(!$stmt){
    die($db->error);
   }
@@ -159,21 +161,22 @@ $stmt->fetch();
    die($db->error);
   }
 
-  $stmt->bind_result($post_id, $message, $picture, $time, $name);
+  $stmt->bind_result($post_id, $message, $picture, $time, $user_name, $user_id);
 if($stmt->fetch()):
 
 ?>
-
 <session>
 <div class="detail_content">
   <div class="detail_name_wrappe">
-  <h3 class="detail_name"><?php echo h($name); ?></h3>
+    <a href="../php/library.php?user=<?php echo h($user_id) ;?>">
+     <h3 class="detail_name"><?php echo h($user_name); ?></h3>
+    </a>
    <p class="detail_time"><?php echo h($time); ?></p>
   </div>
       
   <?php if ($picture) :?>
   <div class="detail_img_wrappe">
-   <a href="../post_img/<?php echo $picture ;?>" data-lightbox="group"><img class="detail_img" src="../post_img/<?php echo $picture ;?>"></a>
+   <a href="../post_img/<?php echo $picture ;?>" data-lightbox="group"><img class="detail_img" src="../post_img/<?php echo h($picture) ;?>"></a>
   </div>
   <?php endif ;?>
 
@@ -191,11 +194,13 @@ if($stmt->fetch()):
   
     <div class="good_but">
       <?php if ($my_like_cnt < 1) : ?>
-       <button class="none" type="submit">&#9825;</button>
+       <button class="none" type="submit"><img src="../img/可愛いハートアイコン2.png"></button>
+       <span class="good_cnt"><?php echo h($likes_post_cnt); ?></span>
       <?php else : ?>
-       <button class="red" type="submit">&#9825;</button>
+       <button class="red" type="submit"><img src="../img/スタンダードなハートの無料アイコン.png"></button>
+       <span class="good_cnt cnt_red"><?php echo h($likes_post_cnt); ?></span>
       <?php endif; ?>
-       <span><?php echo h($likes_post_cnt); ?></span>
+       
     </div>
   </div>
   </form>
@@ -206,13 +211,37 @@ if($stmt->fetch()):
 <?php endif ;?>
 
 </session>
-  
-  
-  
   <!----------footer---------->
  <section class="footer">
-  <p>©2021.○○.○○ Asahi Takayuki All Rights Reserved</p>
+
+  <div class="footer_wrappe">
+    <div class="footer_title">
+      <img class="footer_img" src="../img/k0754_5.png" alt="写真">
+      <p class="footer_title_name">Trabel Borad</p>
+    </div>
+    <div class="footer_link">
+      <ul>
+        <li><a href="../php/login.php">ログイン</a></li>
+        <li><a href="../php/join.php">ユーザー登録</a></li>
+        <li><a href="../php/post.php">投稿する</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer_wrappe2">
+    <div class="footer_link2">
+      <ul>
+        <li><a href="../html/index.html">Home</a></li>
+        <li><a href="../php/library.php">Library</a></li> 
+        <li><a href="../php/community.php">Community</a></li>
+        <li><a href="../php/contact.php">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="cope_riter">©2021.○○.○○ Asahi Takayuki All Rights Reserved</p>
  </section>
 
+</div><!--container-->
 </body>
 </html>

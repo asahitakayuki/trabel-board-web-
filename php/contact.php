@@ -67,6 +67,7 @@ $error = [];
   <meta property="og:type" content="article">
   <meta property="og:description" content="旅の情報を共有する掲示板サイト">
   <meta property="og:site_name" content="プログラミング教材">
+  <link rel="icon" type="image/png" href="../img/k0754_5.png" >
   <link rel="stylesheet" type="text/css" href="../css/reset.css">
   <link rel="stylesheet" type="text/css" href="../css/contact.css">
   <link rel="stylesheet" type="text/css" href="../css/header.css">
@@ -81,8 +82,10 @@ $error = [];
 
 
 <body>
+<div class="container">
+
   <!----------header--------->
-<div class="contact_img img_ams">
+ <div class="contact_img img_ams">
   <header class="header_all">
     <nav class="header_nav">
       <ul class="header_ul">
@@ -108,7 +111,7 @@ $error = [];
     <form action="" method="post">
 
       <div class="form_name">
-        <label for="name">Name<span>お名前</span><span class="required">必須</span></label>
+        <label for="name">Name<span>ニックネーム</span><span class="required">必須</span></label>
         <input type="text" id="name" name="user_name">
         <?php if(isset($error['user_name']) && $error['user_name'] === 'blank'):?>
         <p class="error">* お名前を入力してください</p>
@@ -140,13 +143,14 @@ $error = [];
     </form>
     </section>
   </main>
-</div><!-----big_img----->
+ </div><!-----big_img----->
 
 
-<!----------footer---------->
+ <!----------footer---------->
   <section class="footer">
     <p>©2021.○○.○○ Asahi Takayuki All Rights Reserved</p>
   </section>
 
+</div><!--container-->
 </body>
 </html>

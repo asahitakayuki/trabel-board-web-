@@ -9,6 +9,7 @@
   <meta property="og:type" content="article">
   <meta property="og:description" content="旅の情報を共有する掲示板サイト">
   <meta property="og:site_name" content="プログラミング教材">
+  <link rel="icon" type="image/png" href="../img/k0754_5.png" >
   <link rel="stylesheet" type="text/css" href="../css/reset.css">
   <link rel="stylesheet" type="text/css" href="../css/common.css">
   <link rel="stylesheet" type="text/css" href="../css/header.css">
@@ -24,6 +25,8 @@
 
 
 <body>
+<div class="container">
+
   <!----------header--------->
   <div class="home_img title img_ams">
     <header class="header">
@@ -81,32 +84,32 @@
     </div>
     
   </section>
-</main>
+ </main>
 
 
-<!----------library_concept----------->
+ <!----------library_concept----------->
 
-<section class="concept">
-<div class="concept_wrapper">
+ <section class="concept">
+ <div class="concept_wrapper">
   <div class="concept_title">
    <h2>Library</h2>
   </div>
    <img class="concept_img" src="../img/colton-sturgeon-N4fdQbMJ0nI-unsplash.jpg" alt="ライブラリコンセプトの写真">
-</div>
-<div class="concept_text_wrapper grd1">  
+ </div>
+ <div class="concept_text_wrapper grd1">  
   <h3 class="concept_sub_title">Libraryで自分の投稿を見る</h3>
 
   <div class="concept_inner">
     <p class="concept_text">Libraryでは、自分の過去の投稿がまとめてある所です。自分の投稿を見たり、今まで投稿してきた投稿数や、貰ってきたいいね数を見れたりできます。また、Comｍunityで自分がみんなの投稿からいいねした投稿も見れたりできます。自分の旅を見返して「あんな事があったな～」「こんなの事があったな～」と思い返してはいかかでしょうか？
     </p>
   </div>
-</div>
-</section>
+ </div>
+ </section>
 
 
 
-<!----------community_concept----------->
-<section class="concept">
+ <!----------community_concept----------->
+ <section class="concept">
   <div class="concept_wrapper">
     <div class="concept_title">
       <h2>Community</h2>
@@ -114,7 +117,7 @@
     <img class="concept_img" src="../img/mario-purisic-jG1z5o7NCq4-unsplash.jpg" alt="コミュニティコンセプトの写真">
   </div>
 
-<div class="concept_text_wrapper grd2">
+ <div class="concept_text_wrapper grd2">
   <h3 class="concept_sub_title">Communityでみんなの投稿を見る</h3>
 
   <div class="concept_inner">
@@ -127,13 +130,13 @@
       思わせるような情報があるかもしれません。
     </p>
   </div>
-</div>
-</section>
+ </div>
+ </section>
 
 
 
-<!----------post_concept---------->
-<section class="concept grd3">
+ <!----------post_concept---------->
+ <section class="concept grd3">
   <h3 class="concept_sub_title">自分の旅を投稿する</h3>
   <div class="concept_inner">
     <p class="concept_text">
@@ -144,12 +147,40 @@
       <button type="submit"><a href="../php/login.php">早速使用してみる</a></button>
     </div>
   </div>
-</section>
+ </section>
 
 
-<!----------footer---------->
-<section class="footer">
-  <p>©2021.○○.○○ Asahi Takayuki All Rights Reserved</p>
-</section>
+ <!----------footer---------->
+ <section class="footer">
+
+  <div class="footer_wrappe">
+    <div class="footer_title">
+      <img class="footer_img" src="../img/k0754_5.png" alt="写真">
+      <p class="footer_title_name">Trabel Borad</p>
+    </div>
+    <div class="footer_link">
+      <ul>
+        <li><a href="../php/login.php">ログイン</a></li>
+        <li><a href="../php/join.php">ユーザー登録</a></li>
+        <li><a href="../php/post.php">投稿する</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer_wrappe2">
+    <div class="footer_link2">
+      <ul>
+        <li><a href="../html/index.html">Home</a></li>
+        <li><a href="../php/library.php">Library</a></li> 
+        <li><a href="../php/community.php">Community</a></li>
+        <li><a href="../php/contact.php">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="cope_riter">©2021.○○.○○ Asahi Takayuki All Rights Reserved</p>
+ </section>
+
+</div><!--container-->
 </body>
 </html>

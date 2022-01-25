@@ -38,6 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
   <meta property="og:type" content="article">
   <meta property="og:description" content="旅の情報を共有する掲示板サイト">
   <meta property="og:site_name" content="プログラミング教材">
+  <link rel="icon" type="image/png" href="../img/k0754_5.png" >
   <link rel="stylesheet" type="text/css" href="../css/reset.css">
   <link rel="stylesheet" type="text/css" href="../css/contact.css">
   <link rel="stylesheet" type="text/css" href="../css/header.css">

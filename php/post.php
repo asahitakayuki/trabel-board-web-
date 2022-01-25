@@ -18,6 +18,7 @@ if(isset($_SESSION['id']) && isset($_SESSION['name'])){
 $post = '';
 $error = [];
 
+
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
   //メッセージのエラーチェック
   $post = (filter_input(INPUT_POST, 'post_content', FILTER_SANITIZE_STRING));
@@ -84,6 +85,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
   <meta property="og:type" content="article">
   <meta property="og:description" content="旅の情報を共有する掲示板サイト">
   <meta property="og:site_name" content="プログラミング教材">
+  <link rel="icon" type="image/png" href="../img/k0754_5.png" >
   <link rel="stylesheet" type="text/css" href="../css/reset.css">
   <link rel="stylesheet" type="text/css" href="../css/header.css">
   <link rel="stylesheet" type="text/css" href="../css/post.css">
@@ -92,7 +94,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
   <title>Trabel Board ~旅の掲示板~</title>
   
-
 </head>
 
 
@@ -114,12 +115,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     </nav>
   </header>
 
+
   <!----------投稿内容を記述して送信する---------->
   <session class="post">
     <form action="" method="post" enctype="multipart/form-data">
-      <textarea name="post_content" placeholder="テキストを入力、写真を挿入"></textarea>
+      <textarea name="post_content" placeholder="テキストを入力、写真を挿入"><?php echo h($post); ?></textarea>
 
-      <input type="file" name="image" value="">
+      <input type="file" name="image">
       
       <div class="but">
        <button type="submit">Communityに投稿する</button>
@@ -135,7 +137,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
       <?php endif; ?>
       <?php if(isset($error['post']) && $error['post'] === 'over'):?>
       <p class="error">* 文字数が超えています</p>
-      <p class="error_int"><?php echo strlen($post) . '文字'; ?>
+      <p class="error_int"><?php  echo '現在' . mb_strlen($post) . '文字'; ?>
       <?php endif; ?>
       </div>
     </form>

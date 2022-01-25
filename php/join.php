@@ -3,6 +3,11 @@ require('../php/dbconnect.php');
 
 $join = [];
 $error = [];
+$join = [
+  'name' => '',
+  'email' => '',
+  'password' => ''
+];
 
 //フォームの内容をチェック
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
@@ -80,6 +85,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
   <meta property="og:type" content="article">
   <meta property="og:description" content="旅の情報を共有する掲示板サイト">
   <meta property="og:site_name" content="プログラミング教材">
+  <link rel="icon" type="image/png" href="../img/k0754_5.png" >
   <link rel="stylesheet" type="text/css" href="../css/reset.css">
   <link rel="stylesheet" type="text/css" href="../css/join&login.css">
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Murecho&display=swap" rel="stylesheet">
@@ -101,7 +107,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
      
     <div class="form_name">
       <label for="name">ニックネーム</label>
-      <input type="text" id="name" name="name" value="">
+      <input type="text" id="name" name="name" value="<?php echo h($join['name']); ?>">
 
       <?php if (isset($error['name']) && $error['name'] === 'name_length'): ?>
         <p class="error">* ニックネームは12文字以内で入力してください</p>
@@ -116,8 +122,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     <div class="form_mail">
       <label for="mail">メールアドレス</label>
-      <?php $d = ''; ?>
-      <input type="text" id="mail" name="email" value="">
+      <input type="text" id="mail" name="email" value="<?php echo h($join['email']); ?>">
         <?php if(isset($error['email']) && $error['email'] === 'blank'):?>
         <p class="error">* メールアドレスを入力してください</p>
         <?php endif; ?>
@@ -128,7 +133,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     <div class="form_password">
       <label for="password">パスワード</label>
-      <input type="password" id="password" name="password" value="">
+      <input type="" id="password" name="password" value="<?php echo h($join['password']); ?>">
 
       <?php if (isset($error['password']) && $error['password'] === 'pass_length'): ?>
         <p class="error">* パスワードは4文字以上で入力してください</p>

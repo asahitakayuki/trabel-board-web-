@@ -2,7 +2,6 @@
 
 body{
   background-color: #fcebb6; 
-  overflow-y: scroll;
 }
 
 header{
@@ -19,7 +18,7 @@ header{
 
 .detail_name_wrappe{
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   padding:20px 0;
   height:40px;
@@ -29,11 +28,19 @@ header{
   color: #858D4D;
   font-size: 40px;
   letter-spacing: 3px;
+  margin-left: 20px;
 }
 
 .detail_time{
   color: #858D4D;
   font-size: 20px;
+  margin-right: 20px;
+}
+
+.library_time{
+  color: #858D4D;
+  font-size: 23px;
+  margin-left: 20px;
 }
 
 .detail_img_wrappe{
@@ -102,12 +109,19 @@ form{
 }
 
 /*いいねボタン*/
+.good_but{
+  display: flex;
+  align-items:center;
+}
+
 .good_but .none , .good_but .red {
   border: none;
   background-color: #ffffff00;
-  border-radius: 25px;
-  padding: 5px;
-  font-size: 20px;
+}
+
+.none , .red{
+  display: flex;
+  align-items: center;
 }
 
 .good_but .none:hover , .good_but .red:hover{
@@ -115,10 +129,13 @@ form{
   transition:0.5s;
 }
 
-.good_but .red{
-  background-color: #ff5781;
+
+
+.good_cnt{
+  font-size: 26px;
+  margin-left: 10px;
 }
 
-span{
-  font-size: 20px;
+.cnt_red{
+  color:#FF0080;
 }

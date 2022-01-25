@@ -22,6 +22,7 @@ $keyword = '';
   <meta property="og:type" content="article">
   <meta property="og:description" content="旅の情報を共有する掲示板サイト">
   <meta property="og:site_name" content="プログラミング教材">
+  <link rel="icon" type="image/png" href="../img/k0754_5.png" >
   <link rel="stylesheet" type="text/css" href="../css/reset.css">
   <link rel="stylesheet" type="text/css" href="../css/header.css">
   <link rel="stylesheet" type="text/css" href="../css/community.css">
@@ -57,6 +58,11 @@ $keyword = '';
 
 <!----------community-検索機能-投稿ページへ移動ボタン＆---------->
 <main>
+  <?php if($_SERVER['REQUEST_METHOD'] === 'POST') {
+   $keyword = $_REQUEST['search'];
+  }
+  ?>
+
   <section class="search">
   <form action="" method="post">
     
@@ -80,14 +86,14 @@ $keyword = '';
  $db = dbconnect();
 
  //最大ページ数を求める
-$count = $db->query('select count(*) as cnt from posts');
-$count = $count->fetch_assoc();
-$max_page = floor(($count['cnt']-1)/10+1);
+ $count = $db->query('select count(*) as cnt from posts');
+ $count = $count->fetch_assoc();
+ $max_page = floor(($count['cnt']-1)/10+1);
 
 
  if($_SERVER['REQUEST_METHOD'] !== 'POST'){ 
  
- $stmt = $db->prepare('select p.id, p.message, p.picture, p.time, m.name from posts  p, members m where m.id=p.members_id order by id desc limit ?, 10');
+ $stmt = $db->prepare('select p.id, p.message, p.picture, p.time, m.name, (SELECT COUNT(*) FROM likes as l WHERE l.posts_id = p.id) from posts  p, members m where m.id=p.members_id order by id desc limit ?, 10');
 
  $stmt->bind_param('i', $start);
 
@@ -95,11 +101,12 @@ $max_page = floor(($count['cnt']-1)/10+1);
  //検索機能部分
  $word = filter_input(INPUT_POST, 'search', FILTER_SANITIZE_STRING);
  $keyword = "%$word%" ;
- $stmt = $db->prepare('SELECT p.id, p.message, p.picture, p.time, m.name 
+ $stmt = $db->prepare('SELECT p.id, p.message, p.picture, p.time, m.name, (SELECT COUNT(*) FROM likes as l WHERE l.posts_id = p.id)
  FROM posts AS p LEFT JOIN members AS m ON m.id=p.members_id WHERE p.message LIKE ? ORDER BY p.id DESC limit ?, 10');
 
  $stmt->bind_param('si', $keyword, $start);
  }
+
 
  $page = filter_input(INPUT_GET, 'pagenation', FILTER_SANITIZE_NUMBER_INT);
   if(!$page){
@@ -113,48 +120,35 @@ $max_page = floor(($count['cnt']-1)/10+1);
   if(!$success){
    die($db->error);
   }
- $stmt->bind_result($post_id, $message, $picture, $time, $name);
-
-//1つの投稿の合計いいね数
- /*$likes = $db->prepare('SELECT count(*) as cnt from likes where posts_id=?');
-  if(!$likes){
-   die($db->error);
-  }
-  $likes->bind_param('i', $post_id);
-  $likes_exe = $stmt->execute();
-  if(!$likes_exe){
-   die($db->error);
-  }
-  $likes->bind_result($likes_post_cnt);
-  while($likes->fetch()){
-  }*/
+ $stmt->bind_result($post_id, $message, $picture, $time, $name, $like_count);
   
  while($stmt->fetch()):
 ?>
-  
-  <section class="community">
-    <a href="../php/detail.php?page=<?php echo $post_id ?>">
-    <div class="post_list">
-      <div class="post_list_inner">
-        <div class="post_name_wrappe">
-         <h3 class="post_name"><?php echo h($name);?></h3>
-         <p class="post_good">いいね○○</p>
-         <p class="post_time"><?php echo h($time) ;?></p>
-        </div>
-       <p class="post_content">
-         <?php if(mb_strlen($message) > 80){
-          echo mb_substr(h($message), 0, 80 ) . '.....';
-         } else{
-          echo h($message);
-         } ?>
-       </p>
+
+
+<section class="community">
+  <a href="../php/detail.php?page=<?php echo $post_id ?>">
+  <div class="post_list">
+    <div class="post_list_inner">
+      <div class="post_name_wrappe">
+        <h3 class="post_name"><?php echo h($name);?></h3>
+        <p class="post_good">いいね<?php echo h($like_count);?></p>
+        <p class="post_time"><?php echo h($time) ;?></p>
       </div>
-      <div class="post_img_wrappe">
-      <?php if ($picture) :?>
-      <a href="../post_img/<?php echo $picture ;?>" class="post_img_a" data-lightbox="group" ><img class="post_img" src="../post_img/<?php echo $picture ;?>"></a>
-      <?php endif ;?>
-      <div>
+      <p class="post_content">
+      <?php if(mb_strlen($message) > 80){
+      echo mb_substr(h($message), 0, 80 ) . '.....';
+      } else{
+      echo h($message);
+      } ?>
+      </p>
     </div>
+    <div class="post_img_wrappe">
+      <?php if ($picture) :?>
+       <a href="../post_img/<?php echo $picture ;?>" class="post_img_a" data-lightbox="group" ><img class="post_img" src="../post_img/<?php echo $picture ;?>"></a>
+      <?php endif ;?>
+    <div>
+  </div>
   </a>
 </section>
 <?php endwhile; ?>

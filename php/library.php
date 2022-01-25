@@ -24,6 +24,7 @@ if(isset($_SESSION['id']) && isset($_SESSION['name'])){
   <meta property="og:type" content="article">
   <meta property="og:description" content="旅の情報を共有する掲示板サイト">
   <meta property="og:site_name" content="プログラミング教材">
+  <link rel="icon" type="image/png" href="../img/k0754_5.png" >
   <link rel="stylesheet" type="text/css" href="../css/reset.css">
   <link rel="stylesheet" type="text/css" href="../css/header.css">
   <link rel="stylesheet" type="text/css" href="../css/library.css">
@@ -47,7 +48,7 @@ if(isset($_SESSION['id']) && isset($_SESSION['name'])){
       <ul class="header_ul">
         <li class="home_icon"><a href="../html/index.html"><img src="../img/outline_home_black_24dp.png" alt="ホームアイコン"></a>
         </li>
-  
+
         <div class="header_li">
           <li class="header_li2"><a href="../php/library.php">Library</a></li>
           <li class="header_li2"><a href="../php/community.php">Community</a></li>
@@ -60,15 +61,37 @@ if(isset($_SESSION['id']) && isset($_SESSION['name'])){
   </header>
 
   <?php
-  //投稿件数を取り出す
+  //詳細画面からユーザー情報を表示する
+  if(isset($_GET['user'])){
+    $user_id = $_GET['user'];
 
+  $db = dbconnect();
+  $stmt = $db->prepare('select name from members where id=?');
+  if(!$stmt){
+   die($db->error);
+  }
+  $stmt->bind_param('i', $user_id);
+  $success = $stmt->execute();
+  if(!$success){
+    die($db->error);
+  }
+
+  $stmt->bind_result($user_name);
+  $stmt->fetch();
+  }
+
+//投稿件数を取り出す
   $db = dbconnect();
   $stmt = $db->prepare('select count(*) as cnt from posts where members_id=?');
   if(!$stmt){
    die($db->error);
   }
 
+  if(isset($_GET['user'])){
+  $stmt->bind_param('i', $user_id);
+  } else {
   $stmt->bind_param('i', $id);
+  }
   $success = $stmt->execute();
   if(!$success){
     die($db->error);
@@ -83,7 +106,12 @@ if(isset($_SESSION['id']) && isset($_SESSION['name'])){
   if(!$stmt){
    die($db->error);
   }
+
+  if(isset($_GET['user'])){
+  $stmt->bind_param('i', $user_id);
+  } else {
   $stmt->bind_param('i', $id);
+  }
   $success = $stmt->execute();
   if(!$success){
     die($db->error);
@@ -97,10 +125,11 @@ if(isset($_SESSION['id']) && isset($_SESSION['name'])){
   <!----------library---------->
   <session class="library">
     <div class="wrapper">
-     <h2 class="name">   
-       <p><?php echo h($name);?></p>
-      </h2>
-      
+      <?php if(isset($_GET['user'])) :?>
+      <h2 class="name"><?php echo h($user_name);?></h2>
+      <?php else :?>
+      <h2 class="name"><?php echo h($name);?></h2>
+      <?php endif; ?>
     </div>
     
     <div class="user_info_wrappe">
@@ -109,7 +138,11 @@ if(isset($_SESSION['id']) && isset($_SESSION['name'])){
      <p>いいね数<span><?php echo $like_cnt; ?></span></p>
 
       <div class="post_but">
+        <?php if(isset($_GET['user'])) :?>
+        <button type="submit"><a href="../php/library_favorite.php?user=<?php echo h($user_id) ; ?>">いいねした投稿を見る</a></button>
+        <?php else: ?>
        <button type="submit"><a href="../php/library_favorite.php">いいねした投稿を見る</a></button>
+       <?php endif ; ?>
       </div>
       <div class="post_but">
        <button type="submit"><a href="../php/post.php">投稿する</a></button>
@@ -123,7 +156,12 @@ if(isset($_SESSION['id']) && isset($_SESSION['name'])){
 $db = dbconnect();
 $stmt = $db->prepare('select p.message, p.picture, p.time from posts as p where members_id=? order by id desc');
 
+if(isset($_GET['user'])){
+$stmt->bind_param('i', $user_id);
+} else {
 $stmt->bind_param('i', $id);
+}
+
 $success = $stmt->execute();
 if(!$success){
  die($db->error);
@@ -136,7 +174,7 @@ while($stmt->fetch()):
 <session class="post_content">
   <div class="detail_content">
     <div class="detail_name_wrappe">
-     <p class="detail_time"><?php echo h($time); ?></p>
+     <p class="library_time"><?php echo h($time); ?></p>
     </div>
       
     <?php if ($picture) :?>
